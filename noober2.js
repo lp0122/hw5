@@ -81,120 +81,42 @@ window.addEventListener('DOMContentLoaded', async function() {
   let xlButton = document.querySelector('#noober-xl-filter')
   let xButton = document.querySelector('#noober-x-filter')
 
+  let buttonArray = [allRidesButton, poolButton, purpleButton, xlButton, xButton]
 
-  allRidesButton.addEventListener('click', async function(event) {
-    event.preventDefault()
-    document.querySelector('.rides').innerHTML = ''
+  function clickControl(button, service) {
+    button.addEventListener('click', function(event) {
+      event.preventDefault()
+      document.querySelector('.rides').innerHTML = ''
 
-    allRidesButton.classList.add('font-extrabold')
-    poolButton.classList.remove('font-extrabold')
-    purpleButton.classList.remove('font-extrabold')
-    xlButton.classList.remove('font-extrabold')
-    xButton.classList.remove('font-extrabold')
+      // clear bold
+      for (let t=0; t< buttonArray.length; t++) {
+        let clearButton = buttonArray[t]
+        if (clearButton.innerHTML !== button.innerHTML) {
+          clearButton.classList.remove('font-extrabold')
+        }
+      }
 
-    console.log('all rides works!')
+      button.classList.add('font-extrabold')
 
-    renderRides(json)
-  })
-  
-  poolButton.addEventListener('click', async function(event) {
-  
-    event.preventDefault()
-    document.querySelector('.rides').innerHTML = ''
-    
-    console.log('pool works!')
-    allRidesButton.classList.remove('font-extrabold')
-    poolButton.classList.add('font-extrabold')
-    purpleButton.classList.remove('font-extrabold')
-    xlButton.classList.remove('font-extrabold')
-    xButton.classList.remove('font-extrabold')
+      let newArray = []
 
-    let newArray = []
-
-    for (let n=0; n<json.length; n++) {
+      for (let n=0; n<json.length; n++) {
       let ride = json[n]
       levelOfService(ride)
-      if (levelOfService(ride) == 'Noober Pool') {
+      if (button == allRidesButton) {
+        renderRides(json)
+      } else if (levelOfService(ride) == service) {
         newArray.push(ride)
+        renderRides(newArray)
       }
-      renderRides(newArray)
       }
-
     })
-  
-  purpleButton.addEventListener('click', async function(event) {
-  
-    event.preventDefault()
-    document.querySelector('.rides').innerHTML = ''
-    
-    console.log('purple works!')
-    allRidesButton.classList.remove('font-extrabold')
-    poolButton.classList.remove('font-extrabold')
-    purpleButton.classList.add('font-extrabold')
-    xlButton.classList.remove('font-extrabold')
-    xButton.classList.remove('font-extrabold')
+  }
 
-    let newArray = []
-
-    for (let n=0; n<json.length; n++) {
-      let ride = json[n]
-      levelOfService(ride)
-      if (levelOfService(ride) == 'Noober Purple') {
-        newArray.push(ride)
-      }
-      renderRides(newArray)
-      }
-
-    })
-
-  xlButton.addEventListener('click', async function(event) {
-  
-    event.preventDefault()
-    document.querySelector('.rides').innerHTML = ''
-    
-    console.log('xl works!')
-    allRidesButton.classList.remove('font-extrabold')
-    poolButton.classList.remove('font-extrabold')
-    purpleButton.classList.remove('font-extrabold')
-    xlButton.classList.add('font-extrabold')
-    xButton.classList.remove('font-extrabold')
-
-    let newArray = []
-
-    for (let n=0; n<json.length; n++) {
-      let ride = json[n]
-      levelOfService(ride)
-      if (levelOfService(ride) == 'Noober XL') {
-        newArray.push(ride)
-      }
-      renderRides(newArray)
-      }
-
-    })
-
-  xButton.addEventListener('click', async function(event) {
-  
-    event.preventDefault()
-    document.querySelector('.rides').innerHTML = ''
-    
-    console.log('x works!')
-    allRidesButton.classList.remove('font-extrabold')
-    poolButton.classList.remove('font-extrabold')
-    purpleButton.classList.remove('font-extrabold')
-    xlButton.classList.remove('font-extrabold')
-    xButton.classList.add('font-extrabold')
-
-    let newArray = []
-
-    for (let n=0; n<json.length; n++) {
-      let ride = json[n]
-      levelOfService(ride)
-      if (levelOfService(ride) == 'Noober X') {
-        newArray.push(ride)
-      }
-      renderRides(newArray)
-      }
-
-    })
+  clickControl(allRidesButton)
+  clickControl(poolButton, 'Noober Pool')
+  clickControl(purpleButton, 'Noober Purple')
+  clickControl(xlButton, 'Noober XL')
+  clickControl(xButton, 'Noober X')
 })
 
